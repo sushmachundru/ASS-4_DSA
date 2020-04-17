@@ -1,0 +1,368 @@
+1)  #include <stdio.h> 
+#include <stdlib.h> 
+struct node 
+{ 
+     int data; 
+     struct node* right; 
+     struct node* left; 
+}; 
+
+
+struct node* newNode(int data) 
+{ 
+     struct node* node = (struct node*) 
+     malloc(sizeof(struct node)); 
+     node->data = data; 
+     node->left = NULL; 
+     node->right = NULL; 
+  
+     return(node); 
+} 
+
+
+void printPostorder(struct node* node) 
+{ 
+     if (node == NULL) 
+        return; 
+  
+     printPostorder(node->left); 
+   
+     printPostorder(node->right); 
+  
+     printf("%d ", node->data); 
+} 
+  
+void printInorder(struct node* node) 
+{ 
+     if (node == NULL) 
+          return; 
+  
+     printInorder(node->left); 
+  
+     printf("%d ", node->data);   
+  
+    
+     printInorder(node->right); 
+} 
+  
+void printPreorder(struct node* node) 
+{ 
+     if (node == NULL) 
+          return; 
+  
+     
+     printf("%d ", node->data);   
+  
+     
+     printPreorder(node->left);   
+  
+     
+     printPreorder(node->right); 
+}     
+
+
+int main() 
+{ 
+     struct node *root  = newNode(3); 
+     root->left             = newNode(4); 
+     root->right           = newNode(5); 
+     root->left->left     = newNode(6); 
+     root->left->right   = newNode(7);  
+  
+     printf("\nPreorder traversal of binary tree is \n"); 
+     printPreorder(root); 
+  
+     printf("\nPreorder traversal of binary tree is \n"); 
+     printInorder(root);   
+  
+     printf("\nPostorder traversal of binary tree is \n"); 
+     printPostorder(root);  
+     return 0; 
+} 
+
+
+output: 
+Preorder traversal of binary tree is
+ 3 4 6 7 5
+Preorder traversal of binary tree is
+6 4 7 3 5
+Postorder traversal of binary tree is
+6 7 4 5 3
+
+
+
+
+
+
+2)typedef struct BST {
+   int data;
+   struct BST *leftChild, *rightChild;
+} node;
+void inorder(node *root) {
+        
+   if (root != NULL) {
+      inorder(root->leftChild);
+      printf("%d ", root->data);
+       inorder(root->rightChild);
+   }
+}
+
+node *newNode(int data) {
+   node *temp;
+   temp = (node *) malloc(sizeof(node));
+   if(temp == NULL)
+    {
+        fprintf (stderr, "Memory failure \n");
+        exit(1);
+    }
+   temp->data = data;
+   temp->leftChild = NULL;
+   temp->rightChild = NULL;
+   return temp;
+}
+node* insert(node *root, int data)
+{
+ 
+    if(root == NULL)
+    {
+                //Create first root node
+        root = newNode(data);
+    }
+    else
+    {
+                if (data < root->data){
+
+
+                        root->leftChild  = insert(root->leftChild, data);
+                }else{
+                         root->rightChild = insert(root->rightChild, data);
+                } 
+    }
+
+
+    return root;
+}
+int main(){
+        struct node *bst = NULL;
+    bst = insert(bst, 70);
+    insert(bst, 10);
+        insert(bst, 90);
+        insert(bst, 40);
+        insert(bst, 30);
+        insert(bst, 60);        
+   inorder(bst);
+   return 0;
+}
+
+
+Output: 20 30 45 69 70 91
+
+
+
+3) #include<stdio.h>
+#include<conio.h>
+int a[50][20],reach[50],n;
+void dfs(int v) {
+	int i;
+	reach[v]=1;
+	for (i=1;i<=n;i++)
+	  if(a[v][i] && !reach[i]) {
+		printf("\n %d->%d",v,i);
+		dfs(i);
+	}
+}
+void main() 
+{
+	int i,j,count=0;
+	
+	printf("\n Enter number of vertices:");
+	scanf("%d",&n);
+	for (i=1;i<=n;i++) {
+		reach[i]=0;
+		for (j=1;j<=n;j++)
+		   a[i][j]=0;
+	}
+	printf("\n Enter the adjacency matrix:\n");
+	for (i=1;i<=n;i++)
+	  for (j=1;j<=n;j++)
+	   scanf("%d",&a[i][j]);
+	dfs(1);
+	printf("\n");
+	for (i=1;i<=n;i++) {
+		if(reach[i])
+		   count++;
+	}
+	if(count==n)
+	  printf("\n Graph is connected"); 
+	  else
+	  printf("\n Graph is not connected");
+	
+}
+
+Output:
+Enter no of vertices:2
+Enter the adjacency matrix:
+1
+2
+3
+4
+
+1->2
+Graph is connected
+
+4)#include<stdio.h>
+#include<conio.h>
+int a[50][50],q[50],visited[20],n,i,j,f=0,r=-1;
+void bfs(int v) {
+	for (i=1;i<=n;i++)
+	  if(a[v][i] && !visited[i])
+	   q[++r]=i;
+	if(f<=r) {
+		visited[q[f]]=1;
+		bfs(q[f++]);
+	}
+}
+void main() {
+	int v;
+	printf("\n Enter the number of vertices:");
+	scanf("%d",&n);
+	for (i=1;i<=n;i++) {
+		q[i]=0;
+		visited[i]=0;
+	}
+	printf("\n Enter graph data in matrix form:\n");
+	for (i=1;i<=n;i++)
+	  for (j=1;j<=n;j++)
+	   scanf("%d",&a[i][j]);
+	printf("\n Enter the starting vertex:");
+	scanf("%d",&v);
+	bfs(v);
+	printf("\n The node which are reachable are:\n");
+	for (i=1;i<=n;i++)
+	  if(visited[i])
+	   printf("%d\t",i); 
+	   else
+	   printf("\n Bfs is not possible");
+	
+}
+
+Output:
+Enter no of vertices:2
+Enter graph data in matrix form:
+4
+5
+6
+7
+
+Enter the starting vertix:5
+The nodes reachable are:6 7
+Bfs is not possible
+
+
+
+5) 
+#include <stdio.h>
+int main()
+{
+  int array[100], search, c, n;
+
+
+  printf("Enter number of elements in array\n");
+  scanf("%d", &n);
+
+
+  printf("Enter %d integer(s)\n", n);
+
+
+  for (c = 0; c < n; c++)
+    scanf("%d", &array[c]);
+
+
+  printf("Enter a number to search\n");
+  scanf("%d", &search);
+
+
+  for (c = 0; c < n; c++)
+  {
+    if (array[c] == search)    /* If required element is found */
+    {
+      printf("%d is present at location %d.\n", search, c+1);
+      break;
+    }
+  }
+  if (c == n)
+    printf("%d isn't present in the array.\n", search);
+
+
+  return 0;
+}
+
+
+output:
+Enter number of elements in array
+3
+Enter 3 integer
+3 4 5
+Enter a number to search
+6
+6 isn't present in the array
+
+
+6)
+#include <stdio.h>
+int main()
+{
+  int c, first, last, middle, n, search, array[100];
+
+
+  printf("Enter number of elements\n");
+  scanf("%d", &n);
+
+
+  printf("Enter %d integers\n", n);
+
+
+  for (c = 0; c < n; c++)
+    scanf("%d", &array[c]);
+
+
+  printf("Enter value to find\n");
+  scanf("%d", &search);
+
+
+  first = 0;
+  last = n - 1;
+  middle = (first+last)/2;
+
+
+  while (first <= last) {
+    if (array[middle] < search)
+      first = middle + 1;
+    else if (array[middle] == search) {
+      printf("%d found at location %d.\n", search, middle+1);
+      break;
+    }
+    else
+      last = middle - 1;
+
+
+    middle = (first + last)/2;
+  }
+  if (first > last)
+    printf("Not found! %d isn't present in the list.\n", search);
+
+
+  return 0;
+}
+
+
+output:
+Enter number of elements
+3
+Enter 3 integer
+4 5 6
+Enter value to find
+6
+6 found at location 2
+
+
